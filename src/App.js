@@ -6,7 +6,9 @@ import { GitHub, Info, Close } from "react-bytesize-icons";
 
 const { REACT_APP_PUTIO_CLIENT_ID } = process.env;
 
-const PUTIO_URL = `https://api.put.io/v2/oauth2/authenticate?client_id=${REACT_APP_PUTIO_CLIENT_ID}&response_type=token&redirect_uri=http://localhost:3000`;
+const PUTIO_URL = `https://api.put.io/v2/oauth2/authenticate?client_id=${REACT_APP_PUTIO_CLIENT_ID}&response_type=token&redirect_uri=${
+  window.location.origin
+}`;
 
 const GlobalStyle = createGlobalStyle`
   * {
