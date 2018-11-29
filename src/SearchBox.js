@@ -26,7 +26,7 @@ export function SearchBox({ onSubmit }) {
         onChange={event => setTerm(event.target.value)}
         onFocus={() => (term === "Search..." ? setTerm("") : setTerm(term))}
         onKeyUp={event => (event.keyCode === KEY_ENTER ? onSubmit(event.target.value) : null)}
-        autoFocus={isIos ? false : true}
+        autoFocus={isIos ? false : "autofocus"}
       />
     </React.Fragment>
   );
