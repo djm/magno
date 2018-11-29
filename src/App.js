@@ -164,11 +164,11 @@ export function App() {
       </Header>
       {showInfo && (
         <InfoBox>
-          <p>Magnet links search interface.</p>
+          <p>Magnet links search interface</p>
           <p>
             Built with <a href="https://reactjs.org">React</a> and{" "}
             <a href="https://github.com/netlify/netlify-lambda">Netlify Lambdas</a>. Hosted on{" "}
-            <a href="https://netlify.com">Netlify</a>.
+            <a href="https://netlify.com">Netlify</a>
           </p>
           <h4>Acknowledgements</h4>
           <p>
