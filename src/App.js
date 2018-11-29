@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
 	}
 
 	body {
-		font-family: "Andale Mono", Consolas, monospaced;
+		font-family: "Andale Mono", Consolas, "Courier New", monospaced;
 		padding: 60px;
 		max-width: 960px;
 		margin: 0 auto;
