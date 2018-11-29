@@ -93,7 +93,7 @@ function ResultItem({ result, token }) {
             copied={copied}
             onClick={() => {
               setCopied(true);
-              addTransfer(token, result.magnet);
+              addTransfer(token, result.magnet).then(data => console.log("data", data));
             }}
           >
             <Confetti active={copied} config={config} />
@@ -143,9 +143,16 @@ export function ResultsBox({ results, token }) {
 }
 
 function addTransfer(token, url) {
-  fetch(`https://api.put.io/v2/transfers/add?oauth_token=${token}`, {
+  const options = {
     method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ url: url }),
-  }).then(res => console.log(res));
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+  };
+  console.log(options);
+  return fetch(
+    `https://api.put.io/v2/transfers/add
+		?url=${url}
+		&callback_url=http://localhost:3000/lol
+		&oauth_token=${token}`,
+    options
+  ).then(res => console.log(res));
 }
