@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import qs from "qs";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Confetti from "react-dom-confetti";
 import { File, User, Activity, Clock } from "react-bytesize-icons";
@@ -70,6 +71,7 @@ const CopyButton = styled.button`
 
 function ResultItem({ result, token }) {
   const [copied, setCopied] = useState(false);
+  const [added, setAdded] = useState(false);
 
   useEffect(
     () => {
@@ -90,22 +92,28 @@ function ResultItem({ result, token }) {
         <a href={result.magnet}>{result.title}</a>
         {token && (
           <CopyButton
-            copied={copied}
+            copied={added}
             onClick={() => {
-              setCopied(true);
-              addTransfer(token, result.magnet).then(data => console.log("data", data));
+              if (added) {
+                window.location = "https://app.put.io/transfers";
+              } else {
+                addTransfer(token, result.magnet).then(
+                  response => response.status === 200 && setAdded(true)
+                );
+              }
             }}
           >
-            <Confetti active={copied} config={config} />
-            Add to put.io
+            <Confetti active={added} config={config} />
+            {!added && <span>Add to put.io</span>}
+            {added && <span>Transfer added</span>}
           </CopyButton>
         )}
         {!token && (
           <CopyToClipboard text={result.magnet} onCopy={() => setCopied(true)}>
             <CopyButton copied={copied}>
               <Confetti active={copied} config={config} />
-              {!copied && <span>copy</span>}
-              {copied && <span>done</span>}
+              {!copied && <span>Copy</span>}
+              {copied && <span>Done</span>}
             </CopyButton>
           </CopyToClipboard>
         )}
@@ -145,13 +153,12 @@ export function ResultsBox({ results, token }) {
 function addTransfer(token, magnetLink) {
   const options = {
     method: "POST",
-    headers: { Accept: "application/json" },
+    headers: { Accept: "application/json", "Content-Type": "application/x-www-form-urlencoded" },
+    body: qs.stringify({
+      url: magnetLink,
+      oauth_token: token,
+    }),
   };
 
-  return fetch(
-    `https://api.put.io/v2/transfers/add?url=${encodeURIComponent(
-      magnetLink
-    )}&oauth_token=${encodeURIComponent(token)}`,
-    options
-  ).then(res => console.log(res));
+  return fetch(`https://api.put.io/v2/transfers/add`, options);
 }

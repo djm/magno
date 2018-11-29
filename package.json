@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "qs": "^6.6.0",
     "react": "^16.7.0-alpha",
     "react-bytesize-icons": "^0.8.3",
     "react-copy-to-clipboard": "^5.0.1",
