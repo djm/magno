@@ -4,6 +4,12 @@ import { SearchBox } from "./SearchBox";
 import { ResultsBox } from "./ResultsBox";
 import { GitHub, Info, Close } from "react-bytesize-icons";
 
+const { REACT_APP_PUTIO_CLIENT_ID } = process.env;
+
+const PUTIO_URL = `https://api.put.io/v2/oauth2/authenticate?client_id=${REACT_APP_PUTIO_CLIENT_ID}&response_type=token&redirect_uri=${
+  window.location.origin
+}`;
+
 const GlobalStyle = createGlobalStyle`
   * {
 		padding: 0;
@@ -125,6 +131,11 @@ export function App() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    setToken(window.location.hash.split("#access_token=")[1]);
+  }, []);
 
   useEffect(
     () => {
@@ -147,6 +158,7 @@ export function App() {
       <Header>
         <Magno loading={loading}>🧲</Magno>
         <Links>
+          {!token && <Link href={PUTIO_URL}>Sign in with put.io</Link>}
           <Link href="https://github.com/peduarte/magno">
             <GitHub width="16" height="16" />
           </Link>
@@ -184,7 +196,7 @@ export function App() {
         </InfoBox>
       )}
       <SearchBox onSubmit={term => setTerm(term)} />
-      <ResultsBox results={results} />
+      <ResultsBox results={results} token={token} />
       <GlobalStyle />
     </React.Fragment>
   );

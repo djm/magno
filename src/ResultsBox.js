@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import qs from "qs";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Confetti from "react-dom-confetti";
 import { File, User, Activity, Clock } from "react-bytesize-icons";
@@ -68,8 +69,9 @@ const CopyButton = styled.button`
   }
 `;
 
-function ResultItem({ result }) {
+function ResultItem({ result, token }) {
   const [copied, setCopied] = useState(false);
+  const [added, setAdded] = useState(false);
 
   useEffect(
     () => {
@@ -88,13 +90,33 @@ function ResultItem({ result }) {
     <Item>
       <Title>
         <a href={result.magnet}>{result.title}</a>
-        <CopyToClipboard text={result.magnet} onCopy={() => setCopied(true)}>
-          <CopyButton copied={copied}>
-            <Confetti active={copied} config={config} />
-            {!copied && <span>copy</span>}
-            {copied && <span>done</span>}
+        {token && (
+          <CopyButton
+            copied={added}
+            onClick={() => {
+              if (added) {
+                window.location = "https://app.put.io/transfers";
+              } else {
+                addTransfer(token, result.magnet).then(
+                  response => response.status === 200 && setAdded(true)
+                );
+              }
+            }}
+          >
+            <Confetti active={added} config={config} />
+            {!added && <span>Add to put.io</span>}
+            {added && <span>Transfer added</span>}
           </CopyButton>
-        </CopyToClipboard>
+        )}
+        {!token && (
+          <CopyToClipboard text={result.magnet} onCopy={() => setCopied(true)}>
+            <CopyButton copied={copied}>
+              <Confetti active={copied} config={config} />
+              {!copied && <span>Copy</span>}
+              {copied && <span>Done</span>}
+            </CopyButton>
+          </CopyToClipboard>
+        )}
       </Title>
 
       <Info>
@@ -115,15 +137,28 @@ function ResultItem({ result }) {
   );
 }
 
-export function ResultsBox({ results }) {
+export function ResultsBox({ results, token }) {
   if (!results) {
     return null;
   }
   return (
     <List>
       {results.map(result => (
-        <ResultItem key={result.magnet} result={result} />
+        <ResultItem key={result.magnet} result={result} token={token} />
       ))}
     </List>
   );
+}
+
+function addTransfer(token, magnetLink) {
+  const options = {
+    method: "POST",
+    headers: { Accept: "application/json", "Content-Type": "application/x-www-form-urlencoded" },
+    body: qs.stringify({
+      url: magnetLink,
+      oauth_token: token,
+    }),
+  };
+
+  return fetch(`https://api.put.io/v2/transfers/add`, options);
 }
