@@ -176,7 +176,7 @@ export function App() {
             <a href="https://twitter.com/philhawksworth" rel="nofollow">
               Phil Hawksowrth
             </a>
-            .Lib forked from <a href="https://github.com/ItzBlitz98/torrentflix">torrentflix</a>
+            . Lib forked from <a href="https://github.com/ItzBlitz98/torrentflix">torrentflix</a>
           </p>
           <p>
             Made by <a href="https://ped.ro">Pedro</a> 👊
