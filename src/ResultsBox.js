@@ -68,7 +68,7 @@ const CopyButton = styled.button`
   }
 `;
 
-function ResultItem({ result }) {
+function ResultItem({ result, token }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(
@@ -88,13 +88,27 @@ function ResultItem({ result }) {
     <Item>
       <Title>
         <a href={result.magnet}>{result.title}</a>
-        <CopyToClipboard text={result.magnet} onCopy={() => setCopied(true)}>
-          <CopyButton copied={copied}>
+        {token && (
+          <CopyButton
+            copied={copied}
+            onClick={() => {
+              setCopied(true);
+              addTransfer(token, result.magnet);
+            }}
+          >
             <Confetti active={copied} config={config} />
-            {!copied && <span>copy</span>}
-            {copied && <span>done</span>}
+            Add to put.io
           </CopyButton>
-        </CopyToClipboard>
+        )}
+        {!token && (
+          <CopyToClipboard text={result.magnet} onCopy={() => setCopied(true)}>
+            <CopyButton copied={copied}>
+              <Confetti active={copied} config={config} />
+              {!copied && <span>copy</span>}
+              {copied && <span>done</span>}
+            </CopyButton>
+          </CopyToClipboard>
+        )}
       </Title>
 
       <Info>
@@ -115,15 +129,23 @@ function ResultItem({ result }) {
   );
 }
 
-export function ResultsBox({ results }) {
+export function ResultsBox({ results, token }) {
   if (!results) {
     return null;
   }
   return (
     <List>
       {results.map(result => (
-        <ResultItem key={result.magnet} result={result} />
+        <ResultItem key={result.magnet} result={result} token={token} />
       ))}
     </List>
   );
+}
+
+function addTransfer(token, url) {
+  fetch(`https://api.put.io/v2/transfers/add?oauth_token=${token}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ url: url }),
+  }).then(res => console.log(res));
 }
