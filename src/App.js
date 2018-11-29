@@ -10,8 +10,6 @@ const PUTIO_URL = `https://api.put.io/v2/oauth2/authenticate?client_id=${REACT_A
   window.location.origin
 }`;
 
-console.log(PUTIO_URL);
-
 const GlobalStyle = createGlobalStyle`
   * {
 		padding: 0;

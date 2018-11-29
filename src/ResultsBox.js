@@ -142,17 +142,16 @@ export function ResultsBox({ results, token }) {
   );
 }
 
-function addTransfer(token, url) {
+function addTransfer(token, magnetLink) {
   const options = {
     method: "POST",
-    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    headers: { Accept: "application/json" },
   };
-  console.log(options);
+
   return fetch(
-    `https://api.put.io/v2/transfers/add
-		?url=${url}
-		&callback_url=http://localhost:3000/lol
-		&oauth_token=${token}`,
+    `https://api.put.io/v2/transfers/add?url=${encodeURIComponent(
+      magnetLink
+    )}&oauth_token=${encodeURIComponent(token)}`,
     options
   ).then(res => console.log(res));
 }
