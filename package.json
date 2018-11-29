@@ -1,0 +1,44 @@
+{
+  "name": "magno",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.7.0-alpha",
+    "react-bytesize-icons": "^0.8.3",
+    "react-copy-to-clipboard": "^5.0.1",
+    "react-dom": "^16.7.0-alpha",
+    "react-dom-confetti": "^0.0.10",
+    "react-scripts": "2.1.1",
+    "react-textfit": "^1.1.0",
+    "styled-components": "^4.1.2"
+  },
+  "scripts": {
+    "start": "run-p start:**",
+    "start:app": "react-scripts start",
+    "start:lambda": "netlify-lambda serve src/lambda",
+    "build": "run-p build:**",
+    "build:app": "react-scripts build",
+    "build:lambda": "netlify-lambda build src/lambda",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "babel-loader": "^8.0.4",
+    "cheerio": "^0.18.0",
+    "http-proxy-middleware": "^0.19.1",
+    "moment": "^2.20.1",
+    "netlify-lambda": "^1.0.3",
+    "node-fetch": "^1.7.3",
+    "npm-run-all": "^4.1.5",
+    "request": "^2.51.0"
+  }
+}
