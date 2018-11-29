@@ -1,6 +1,8 @@
-🧲
+# 🧲
 
-Search torrent magnet links.
+Magnet links search interface.
+
+Built with [React](https://reactjs.org/) and [Netlify Lambdas](https://github.com/netlify/netlify-lambda). Hosted on [Netlify](https://netlify.com).
 
 ### Acknowledgements
 
