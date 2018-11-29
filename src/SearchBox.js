@@ -13,15 +13,21 @@ const Input = styled.input`
 
 const KEY_ENTER = 13;
 const isIos = () => !!window.navigator.userAgent.match(/iPad|iPhone/i);
+
 export function SearchBox({ onSubmit }) {
   const [term, setTerm] = useState(isIos() ? "Search..." : "");
+
   return (
     <React.Fragment>
       <Input
         type="text"
         value={term}
         onBlur={event =>
-          event.target.value.length === 0 ? (term ? setTerm(term) : setTerm("Search...")) : null
+          event.target.value.length === 0
+            ? term
+              ? onSubmit(term)
+              : setTerm("Search...")
+            : onSubmit(event.target.value)
         }
         onChange={event => setTerm(event.target.value)}
         onFocus={() => (term === "Search..." ? setTerm("") : setTerm(term))}
