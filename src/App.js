@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled, { css, createGlobalStyle, keyframes } from "styled-components";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 import { SearchBox } from "./SearchBox";
 import { ResultsBox } from "./ResultsBox";
 import { GitHub, Info, Close } from "react-bytesize-icons";
@@ -135,15 +136,27 @@ const InfoBox = styled.div`
   }
 `;
 
+const putioToken = window.location.hash.split("#access_token=")[1];
+
+if (putioToken) {
+  window.history.pushState("", "", "/");
+}
+
 export function App() {
   const [term, setTerm] = useState();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-  const [token, setToken] = useState(); //https://usehooks.com/#useLocalStorage
+  const [token, setToken] = useLocalStorage("token", putioToken);
 
+  // HACK: Using `account/info` to check if token is valid
+  // there must be a better way to do this...
   useEffect(() => {
-    setToken(window.location.hash.split("#access_token=")[1]);
+    fetch(`https://api.put.io/v2/account/info?oauth_token=${token}`).then(res => {
+      if (res.status === 401) {
+        setToken(undefined);
+      }
+    });
   }, []);
 
   useEffect(
@@ -161,6 +174,8 @@ export function App() {
     },
     [term]
   );
+
+  console.log("token", token);
 
   return (
     <React.Fragment>
