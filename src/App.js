@@ -175,8 +175,6 @@ export function App() {
     [term]
   );
 
-  console.log("token", token);
-
   return (
     <React.Fragment>
       <Header>
