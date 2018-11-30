@@ -18,13 +18,18 @@ const GlobalStyle = createGlobalStyle`
 
 	body {
 		font-family: "Andale Mono", Consolas, "Courier New", monospaced;
-		padding: 60px;
 		max-width: 960px;
 		margin: 0 auto;
+		padding: 30px;
 		background-color: #212123;
 		color: #ffffff;
 		line-height: 1.6;
+
+		@media(min-width: 40em) {
+			padding: 60px;
+		}
 	}
+
 
 	input, button {
 		font-family: inherit;
@@ -76,7 +81,7 @@ const Magno = styled.span`
   width: 0;
   height: 0;
   position: relative;
-  top: -16px;
+  top: -10px;
   transform: ${props => (props.loading ? "rotate(-90deg)" : "rotate(0deg)")};
   transition: transform 400ms;
   transform-origin: left center;
@@ -86,6 +91,10 @@ const Magno = styled.span`
           ${turn} 900ms infinite alternate-reverse
         `
       : "none"};
+
+  @media (min-width: 40em) {
+    top: -16px;
+  }
 `;
 
 const Links = styled.nav`
@@ -131,7 +140,7 @@ export function App() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(); //https://usehooks.com/#useLocalStorage
 
   useEffect(() => {
     setToken(window.location.hash.split("#access_token=")[1]);

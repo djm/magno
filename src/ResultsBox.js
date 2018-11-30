@@ -105,7 +105,7 @@ function ResultItem({ result, token }) {
           >
             <Confetti active={added} config={config} />
             {!added && <span>Add to put.io</span>}
-            {added && <span>Transfer added</span>}
+            {added && <span>See transfer</span>}
           </CopyButton>
         )}
         {!token && (
